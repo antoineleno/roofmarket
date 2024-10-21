@@ -438,3 +438,14 @@
     padding-right: 0;
     border-right: none;
 }
+.modal-content{
+    margin-top: 150px;
+}
+
+#priceRangeInput{
+    cursor: pointer;
+}
+
+.btn:hover{
+    background-color: blue;
+}

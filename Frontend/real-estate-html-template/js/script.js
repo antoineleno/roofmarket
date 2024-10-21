@@ -1,3 +1,38 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const minPriceInput = document.getElementById('minPrice');
+    const maxPriceInput = document.getElementById('maxPrice');
+    const selectedRange = document.getElementById('selectedRange');
+    const priceRangeInput = document.getElementById('priceRangeInput');
+    const applyPriceRangeBtn = document.getElementById('applyPriceRange');
+
+    function updateSelectedRange() {
+        const minPrice = parseInt(minPriceInput.value);
+        const maxPrice = parseInt(maxPriceInput.value);
+
+        if (minPrice > maxPrice) {
+            minPriceInput.value = maxPrice;
+        } else if (maxPrice < minPrice) {
+            maxPriceInput.value = minPrice;
+        }
+
+        selectedRange.textContent = `Selected: $${minPriceInput.value} - $${maxPriceInput.value}`;
+    }
+
+    updateSelectedRange();
+
+    minPriceInput.addEventListener('input', updateSelectedRange);
+    maxPriceInput.addEventListener('input', updateSelectedRange);
+
+    applyPriceRangeBtn.addEventListener('click', () => {
+        const minPrice = minPriceInput.value;
+        const maxPrice = maxPriceInput.value;
+        priceRangeInput.value = `Price range: $${minPrice} - $${maxPrice}`;
+    });
+});
+
+
+
+
 // This function is called when a file input changes
 function addNewImageField(input) {
     // Check if the file input has a value (an image was selected)
