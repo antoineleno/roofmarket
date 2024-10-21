@@ -30,6 +30,38 @@ function addNewImageField(input) {
     }
 }
 
+// This function is called when a file input changes
+function addNewImageField(input) {
+    // Check if the file input has a value (an image was selected)
+    if (input.files.length > 0) {
+        // Create a new div for the additional image input and agent name input
+        const newDiv = document.createElement('div');
+        newDiv.className = 'col-12 col-sm-6 col-md-6 mb-3';
+
+        // Create new file input for agent image
+        const newFileInput = document.createElement('input');
+        newFileInput.type = 'file';
+        newFileInput.className = 'form-control';
+        newFileInput.accept = 'image/*';
+        newFileInput.required = true;
+        newFileInput.onchange = function() { addNewImageField(this); };
+
+        // Create new text input for agent name
+        const newTextInput = document.createElement('input');
+        newTextInput.type = 'text';
+        newTextInput.className = 'form-control mt-2';
+        newTextInput.placeholder = 'Agent name';
+        newTextInput.required = true;
+
+        // Append new inputs to the new div
+        newDiv.appendChild(newFileInput);
+        newDiv.appendChild(newTextInput);
+
+        // Append the new div to the container
+        document.getElementById('imageContainer').appendChild(newDiv);
+    }
+}
+
 // modalHandler.js
 
 function setupModalToggle(signInButtonId, signUpModalId, forgotPasswordModalId, addPropertyModalId) {
@@ -235,3 +267,4 @@ document.getElementById('evaluateButton').addEventListener('click', function(eve
 document.getElementById('payButton').addEventListener('click', function() {
     window.location.href = 'profile.html'; // Update this URL to your payment page
 });
+

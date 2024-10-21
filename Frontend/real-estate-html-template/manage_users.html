@@ -56,12 +56,12 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto">
-                        <a href="index.html" class="nav-item nav-link active">Home</a>
+                        <a href="index.html" class="nav-item nav-link">Home</a>
                         <a href="about.html" class="nav-item nav-link">About</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Property</a>
                             <div class="dropdown-menu rounded-0 m-0">
-                                <a href="property-list.html" class="dropdown-item">Property List</a>
+                                <a href="property_listing.html" class="dropdown-item">Property List</a>
                                 <a href="property-type.html" class="dropdown-item">Property Type</a>
                                 <a href="property-agent.html" class="dropdown-item">Property Agent</a>
                             </div>
@@ -70,18 +70,31 @@
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Action</a>
                             <div class="dropdown-menu rounded-0 m-0">
                                 <a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#addPropertyModal">Add property</a>
-                                <a href="property-type.html" class="dropdown-item">View my properties</a>
-                                <a href="property-agent.html" class="dropdown-item">View Orders</a>
+                                <a href="my_properties.html" class="dropdown-item">View my properties</a>
                             </div>
                         </div>
                         <div class="d-flex justify-content-center align-items-center">
-                            <a href="whishlist.html" class="nav-item nav-link me-3"> <!-- Added margin-end for spacing -->
+                            <a href="wishlist.html" class="nav-item nav-link me-3"> <!-- Added margin-end for spacing -->
                                 <img src="img/heart.png" alt="" style="height: 24px; width: 24px;">
                             </a>
                             <a href="" class="nav-item nav-link position-relative" data-bs-toggle="modal" data-bs-target="#MessageModalLabel">
                                 <img src="img/message.png" alt="Message icon" style="height: 24px; width: 24px;">
                                 <span class="badge" style="color: black; position: absolute; top: 108; right: 0; transform: translate(45%, -45%); font-size: 14px;">3</span>
                             </a>
+                            
+                            <!-- User Profile Section display it when the user log in
+                            <div class="d-flex align-items-center ms-3">
+                                <div class="dropdown">
+                                    <div class="bg-success p-1 rounded-circle">
+                                        <img src="antoine.jpg" alt="User Profile" class="rounded-circle" style="width: 40px; height: 40px; cursor: pointer;" id="profilePic">
+                                    </div>
+                                    <ul class="dropdown-menu dropdown-menu-end" id="profileDropdown" style="display: none;" aria-labelledby="profilePic">
+                                        <li><a class="dropdown-item" href="profile.html">View Profile</a></li>
+                                        <li><a class="dropdown-item" href="#">Log Out</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            User Profile Section End -->
                         </div>
                     </div>
                     <a id="signInButton" href="#" class="btn btn-primary px-3 d-flex justify-content-center" data-bs-toggle="modal" data-bs-target="#signInModal">
@@ -274,9 +287,7 @@
                     </div>
                     <div class="col-lg-3 col-md-6">
                         <h5 class="text-white mb-4">Quick Links</h5>
-                        <a class="btn btn-link text-white-50" href="">Contact Us</a>
                         <a class="btn btn-link text-white-50" href="about.html">Our Services</a>
-                        <a class="btn btn-link text-white-50" href="testimonial.html">Testimonial</a>
                         <a class="btn btn-link text-white-50" href="">Terms & Condition</a>
                     </div>
                     <div class="col-lg-3 col-md-6">
@@ -317,12 +328,14 @@
                     <div class="row">
                         <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
                             &copy; <a class="border-bottom" href="#">RoofMarket</a>, All Right Reserved. 
+							
+							<!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
                         </div>
                         <div class="col-md-6 text-center text-md-end">
                             <div class="footer-menu">
                                 <a href="">Home</a>
                                 <a href="">Cookies</a>
-                                <a href="">Help</a>
+                                <a href="about.html">Help</a>
                                 <a href="">FQAs</a>
                             </div>
                         </div>
