@@ -449,3 +449,9 @@
 .btn:hover{
     background-color: blue;
 }
+
+@media (max-width: 576px) {
+    .row .col-sm {
+        margin-bottom: 15px;
+    }
+}
