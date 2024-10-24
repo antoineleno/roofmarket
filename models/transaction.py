@@ -4,7 +4,6 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Float, String, Column, ForeignKey
 from sqlalchemy.orm import relationship
-from models.payement import Payment
 import os
 
 class Transaction(BaseModel, Base):

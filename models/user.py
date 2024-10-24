@@ -6,9 +6,7 @@ from sqlalchemy.orm import relationship
 from models.property import Property
 from models.transaction import Transaction
 from models.whishlist import Whishlist
-from models.agent import Agent
 from models.message import Message
-from models.visit_schedule import Visit_schedule
 from models.review import Review
 import os
 
