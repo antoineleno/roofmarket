@@ -26,9 +26,7 @@ class User(BaseModel, Base):
     properties = relationship("Property", back_populates="user", cascade="all, delete-orphan")
     transactions = relationship("Transaction", back_populates="user", cascade="all, delete-orphan")
     whishlists = relationship("Whishlist", back_populates="user", cascade="all, delete-orphan")
-    agent = relationship("Agent", back_populates="user")
     messages1 = relationship("Message", foreign_keys="[Message.sender_id]", back_populates="sender", cascade="all, delete-orphan")
     messages2 = relationship("Message", foreign_keys="[Message.receiver_id]", back_populates="receiver", cascade="all, delete-orphan")
-    schedules = relationship("Visit_schedule", back_populates="user", cascade="all, delete-orphan")
     reviews = relationship("Review", back_populates="user", cascade="all, delete-orphan")
 

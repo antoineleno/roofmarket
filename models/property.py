@@ -37,5 +37,4 @@ class Property(BaseModel, Base):
     property_image = relationship("Property_image", back_populates="property2", cascade="all, delete-orphan")
     whishlists = relationship("Whishlist", back_populates="properties")
     messages = relationship("Message", back_populates="property3")
-    schedules = relationship("Visit_schedule", back_populates="property3")
     reviews = relationship("Review", back_populates="property")

@@ -11,8 +11,5 @@ class Agent(BaseModel, Base):
 
     __tablename__ = "agent"
 
-    user_id = Column(String(60), ForeignKey("user.id"), nullable=False)
-    license_number = Column(String(60), nullable=False)
-    experience_years = Column(String(15), nullable=False)
-
-    user = relationship("User", back_populates="agent")
+    agent_name= Column(String(60), nullable=False)
+    image_url = Column(String(60), nullable=False)
