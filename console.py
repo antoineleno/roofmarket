@@ -11,9 +11,7 @@ from models.transaction import Transaction
 from models.whishlist import Whishlist
 from models.user import User
 from models.property_image import Property_image
-from models.visit_schedule import Visit_schedule
 from models.message import Message
-from models.payement import Payment
 from models.review import Review
 from models import storage
 
@@ -28,8 +26,8 @@ class ROOFMARKETCommand(cmd.Cmd):
     classes = {
                'BaseModel': BaseModel, 'User': User, 'Property': Property,
                'Agent': Agent, 'Transaction': Transaction, 'Whishlist': Whishlist,
-               'Property_image': Property_image, 'Visit_schedule': Visit_schedule,
-               'Message': Message, 'Payment': Payment, 'Review': Review
+               'Property_image': Property_image,
+               'Message': Message, 'Review': Review
               }
 
     def do_quit(self, line):

@@ -14,9 +14,7 @@ from models.transaction import Transaction
 from models.whishlist import Whishlist
 from models.review import Review
 from models.property_image import Property_image
-from models.visit_schedule import Visit_schedule
 from models.message import Message
-from models.payement import Payment
 
 
 class DBStorage:
