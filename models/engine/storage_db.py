@@ -3,18 +3,22 @@
 
 import os
 import sys
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import Base
 from models.agent import Agent
 from models.user import User
 from models.property import Property
-from models.transaction import Transaction
+from models.transaction import Transaction, Subcription
 from models.whishlist import Whishlist
 from models.review import Review
 from models.property_image import Property_image
-from models.message import Message
+from models.message import Message, Room, RoomParticipants
+base_dir = os.path.dirname(__file__)
+parent_dir = os.path.join(base_dir, '..', '..')
+sys_path = os.path.abspath(parent_dir)
+
+sys.path.append(sys_path)
 
 
 class DBStorage:
@@ -28,9 +32,9 @@ class DBStorage:
         """Contructor method
         """
         env = os.getenv("env")
-
+        url = "roofmarket_user:roofmarket_pwd@localhost/roofmarket_db"
         self.__engine = create_engine(
-                    'mysql+mysqldb://roofmarket_user:roofmarket_pwd@localhost/roofmarket_db')
+                    'mysql+mysqldb://' + url, pool_pre_ping=True)
 
         if env == "test":
             Base.metadata.drop_all(self.__engine)
@@ -45,15 +49,16 @@ class DBStorage:
             Dict: All records from a database
         """
         allclasses = {"User": User,
-                      "State": Agent,
-                      "City": Property,
-                      "Amenity": Transaction,
-                      "Place": Whishlist,
+                      "Agent": Agent,
+                      "Property": Property,
+                      "Transaction": Transaction,
+                      "Subcription": Subcription,
+                      "Whishlist": Whishlist,
                       "Review": Review,
                       "Property_image": Property_image,
-                      "Visit_schedule": Visit_schedule,
                       "Message": Message,
-                      "Payment": Payment}
+                      "Room": Room,
+                      "RoomParticipants": RoomParticipants}
         obj_result = {}
         cls = cls if not isinstance(cls, str) else allclasses.get(cls)
         if cls is None:
@@ -88,6 +93,7 @@ class DBStorage:
         """
         if obj:
             self.__session.delete(obj)
+            self.__session.commit()
 
     def reload(self):
         """create all tables in the database
@@ -100,3 +106,74 @@ class DBStorage:
         """close session
         """
         self.__session.close()
+
+    def get_object(self, cls, sign=None, all=None, order_by=None,
+                   limit=None,
+                   count=False, **kwargs):
+        """
+        Get all objects or only one object based on filters.
+        Optionally count the results.
+
+        Args:
+            cls: The model class to query.
+            sign: The comparison operator for filtering.
+            all: If not None, fetches all matching objects.
+            order_by: A tuple (column, direction) for sorting
+                (e.g., (cls.created_at, 'desc')).
+            limit: An integer specifying the maximum number
+                of results to return.
+            count: If True, returns the count of results based on the filters.
+            **kwargs: Key-value pairs for filtering.
+
+        Returns:
+            A single object if `all` is None, otherwise a list of objects.
+            If `count` is True, returns the count of objects.
+        """
+        if sign is None:
+            sign = '=='
+
+        query = self.__session.query(cls)
+
+        operators = {
+            '==': lambda key, value: key == value,
+            '!=': lambda key, value: key != value,
+            '<': lambda key, value: key < value,
+            '<=': lambda key, value: key <= value,
+            '>': lambda key, value: key > value,
+            '>=': lambda key, value: key >= value
+        }
+
+        if kwargs:
+            for key, value in kwargs.items():
+                if sign in operators:
+                    query = query.filter(operators[sign](getattr(cls, key),
+                                                         value))
+                else:
+                    raise ValueError(f"Invalid comparison operator: {sign}")
+        if count:
+            if (
+                "room_id" in kwargs and
+                "user_id" in kwargs and
+                "read_status" in kwargs
+            ):
+                query = self.__session.query(cls).filter(
+                    cls.room_id == kwargs.get("room_id"),
+                    cls.user_id != kwargs.get("user_id"),
+                    cls.read_status == False
+                )
+
+                return query.count()
+        if order_by:
+            column, direction = order_by
+            if direction.lower() == 'desc':
+                query = query.order_by(column.desc())
+            elif direction.lower() == 'asc':
+                query = query.order_by(column)
+            else:
+                raise ValueError("Invalid direction for order_by")
+
+        if limit is not None:
+            query = query.limit(limit)
+        if all is not None:
+            return query.all()
+        return query.first()

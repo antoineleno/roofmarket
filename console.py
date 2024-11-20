@@ -11,7 +11,7 @@ from models.transaction import Transaction
 from models.whishlist import Whishlist
 from models.user import User
 from models.property_image import Property_image
-from models.message import Message
+from models.message import Message, Room
 from models.review import Review
 from models import storage
 
@@ -27,7 +27,7 @@ class ROOFMARKETCommand(cmd.Cmd):
                'BaseModel': BaseModel, 'User': User, 'Property': Property,
                'Agent': Agent, 'Transaction': Transaction, 'Whishlist': Whishlist,
                'Property_image': Property_image,
-               'Message': Message, 'Review': Review
+               'Message': Message, 'Review': Review, 'Room': Room
               }
 
     def do_quit(self, line):
@@ -48,21 +48,22 @@ class ROOFMARKETCommand(cmd.Cmd):
 
             Usage: create class_name
         """
-        arguments = shlex.split(args)
-        f_arguments = arguments[1:]
-        if not args:
-            print("** class doesn't exist **")
-            return
-        elif arguments[0] not in ROOFMARKETCommand.classes:
-            print("** class doesn't exist **")
-            return
-        new_instance = globals()[arguments[0]]()
+        for i in range(1):
+            arguments = shlex.split(args)
+            f_arguments = arguments[1:]
+            if not args:
+                print("** class doesn't exist **")
+                return
+            elif arguments[0] not in ROOFMARKETCommand.classes:
+                print("** class doesn't exist **")
+                return
+            new_instance = globals()[arguments[0]]()
 
-        for my_args in f_arguments:
-            key, value = my_args.split("=")
-            setattr(new_instance, key, value)
-        new_instance.save()
-        print(new_instance.id)
+            for my_args in f_arguments:
+                key, value = my_args.split("=")
+                setattr(new_instance, key, value)
+            new_instance.save()
+            print(new_instance.id)
 
 
     def do_destroy(self, args):
@@ -86,6 +87,7 @@ class ROOFMARKETCommand(cmd.Cmd):
                 value.delete()
                 storage.save()
 
-
+    def do_all(self, args):  
+        print(storage.get_object(User))     
 if __name__ == '__main__':
     ROOFMARKETCommand().cmdloop()

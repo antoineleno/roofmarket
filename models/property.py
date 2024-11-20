@@ -30,10 +30,9 @@ class Property(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     user_id = Column(String(60), ForeignKey('user.id'), nullable=False)
-
     user = relationship("User", back_populates="properties")
     transaction = relationship("Transaction", back_populates="property1", cascade="all, delete-orphan")
     property_image = relationship("Property_image", back_populates="property2", cascade="all, delete-orphan")
     whishlists = relationship("Whishlist", back_populates="properties")
-    messages = relationship("Message", back_populates="property3")
+    room_participants = relationship("RoomParticipants", back_populates="property")
     reviews = relationship("Review", back_populates="property")
