@@ -33,13 +33,18 @@ git clone https://github.com/antoineleno/roofmarket.git
 cd roofmarket
 ``` 
 
-3. Create virtual environment
+3. Create a virtual environment
 
 ```bash
 python3 -m venv myenv
 ```
+4. Activate the virtual environment
 
-4. Install dependencies
+```bash
+source myenv/bin/activate
+```
+
+5. Install dependencies
 
 ```bash
 npm install
