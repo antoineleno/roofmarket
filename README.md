@@ -1,12 +1,10 @@
 <h1 align="center" style="background-color: white; color: green; padding: 10px; border-radius: 5px; font-weight: bold; font-family: 'Arial', sans-serif;">
   <img src="web_flask/auth/static/img/icon-deal.png" 
        alt="icon" 
-       style="width: 40px; height: 40px; border-radius: 50%; background-color: white; border: 2px dashed green; padding: 5px; vertical-align: middle;"> 
-  <span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-">RoofMarket</span> 
+       style="width: 40px; height: 40px; border-radius: 50%; border: 2px dashed green; padding: 5px; vertical-align: middle;"> 
+  <span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">RoofMarket</span> 
 </h1>
 <h1 align="left">Project Description</h1>
-
 
 
 
