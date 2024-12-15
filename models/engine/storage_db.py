@@ -100,12 +100,12 @@ class DBStorage:
         """
         Base.metadata.create_all(self.__engine)
         factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        self.__session = scoped_session(factory)()
+        self.__session = scoped_session(factory)
 
     def close(self):
         """close session
         """
-        self.__session.close()
+        self.__session.remove() # use of remove instead of close in scooped_session
 
     def get_object(self, cls, sign=None, all=None, order_by=None,
                    limit=None,
@@ -177,3 +177,79 @@ class DBStorage:
         if all is not None:
             return query.all()
         return query.first()
+
+    def property_objs(self, per_page, offset, property_type=None, country=None, 
+                      city=None, max_price=None, min_price=None, listing_type=None):
+        """ Returns the properties needed to be listed in one page"""
+
+        if property_type:
+            if country and city and max_price and min_price:
+                return self.__session.query(Property).filter(Property.property_type == property_type, 
+                                                             Property.country == country, Property.price <= max_price, 
+                                                             Property.price >= min_price).limit(per_page).offset(offset)
+            return self.__session.query(Property).filter(Property.property_type == property_type).limit(per_page).offset(offset)
+        elif listing_type:
+            return self.__session.query(Property).filter(Property.listing_type == listing_type).limit(per_page).offset(offset)
+        return self.__session.query(Property).limit(per_page).offset(offset)
+
+    def count(self, classe, property_type=None, country=None, 
+              city=None, max_price=None, min_price=None, listing_type=None):
+        """Counts the number of rows or objects in a given table sometimes with property_type given for properties"""
+    
+        if property_type:
+            # Implemented for the search fonctionnality
+            if country and city and max_price and min_price:
+                return self.__session.query(classe).filter(classe.property_type == property_type, 
+                                                           classe.country == country, classe.price <= max_price, 
+                                                           classe.price >= min_price).count()
+            return self.__session.query(classe).filter(classe.property_type == property_type).count()
+        elif listing_type:
+            # For filtering properties (sell, rent, ...)
+            return self.__session.query(classe).filter(classe.listing_type == listing_type).count()
+        return self.__session.query(classe).count()
+
+    def get_image(self, property_id, image_type=None):
+        """Returns a list of images or one image (if type) based on the property id"""
+        if not image_type:
+            return self.__session.query(Property_image).filter(Property_image.property_id == property_id).all()
+        
+        return self.__session.query(Property_image).filter(Property_image.property_id == property_id, 
+                                                           Property_image.image_type == image_type).first()
+
+    def get_countries(self):
+        # Fetch distinct countries
+        countries = self.__session.query(Property.country).distinct().all()
+        countries_list = [country[0] for country in countries]
+        return countries_list
+    
+    def get_cities(self, country):
+        # Fetch distinct cities for the given country from the database
+        return self.__session.query(Property.city).filter(Property.country == country).distinct().all()
+
+    def get_property_by_id(self, property_id):
+        """Returns the property of a specific id"""
+        return self.__session.query(Property).filter(Property.id == property_id).first()
+    
+    def get_property_by_user_id(self, user_id, listing_type=None):
+        """Returns all properties of the given user id"""
+        if listing_type:
+            return self.__session.query(Property).filter(Property.user_id == user_id, Property.listing_type == listing_type)
+        return self.__session.query(Property).filter(Property.user_id == user_id)
+
+    def delete_property_by_id(self, property_id):
+        """Deletes a property matching the given id and its images"""
+        self.__session.query(Property_image).filter(Property_image.property_id == property_id).delete()
+        self.__session.query(Property).filter(Property.id == property_id).delete()
+        self.__session.commit()
+    
+    def all_wishlist_for_user(self, user_id):
+        """Returns a list of all user's wishlist"""
+        ids= self.__session.query(Whishlist.property_id).filter(Whishlist.user_id == user_id).all()
+        for id in ids:
+            print(id)
+        return ids
+    
+    def get_agents(self):
+        """Returns all agent"""
+        return self.__session.query(Agent).all()
+

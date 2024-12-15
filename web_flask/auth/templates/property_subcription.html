@@ -50,8 +50,8 @@
                     <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                         <div class="property-item rounded overflow-hidden">
                             <div class="position-relative overflow-hidden">
-                                <a href="#"><img class="img-fluid" src="{{ url_for('.static', filename='img/' + property.picture_link) }}" alt=""></a>
-                                {% if property.duration == None %}
+                                <a href="#"><img class="img-fluid" src="../{{ property.picture_link }}" alt=""></a>
+                                {% if property.duration == None or property.duration == 0 %}
                                 <div class="bg-danger rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">Unsubscribed</div>
                                 {% else %}
                                 <div class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">{{ property.duration }} Days left</div>

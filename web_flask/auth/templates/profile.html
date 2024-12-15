@@ -145,7 +145,7 @@
             </div>
             <div class="col-md-6 mb-3">
                 <label for="nameInput" class="form-label">Phone number</label>
-                <input type="text" class="form-control" id="nameInput" name="phone_number" value="{{phone_number}}">
+                <input type="text" class="form-control" id="nameInput" name="phone_number" value="{{phone_number}}" minlength="9" maxlength="9">
             </div>
             {%  if user_type != "Admin"%}
             <div class="col-md-6 mb-3">
@@ -166,6 +166,16 @@
             <div class="col-md-6 mb-3">
                 <label for="profilePic" class="form-label">Upload New Profile Picture</label>
                 <input type="file" class="form-control" id="profilePic" name="profile_pic">
+            </div>
+            <!-- Old password input on the right -->
+            <div class="col-md-6 mb-3">
+                <label for="oldPasswordInput" class="form-label">Old Password</label>
+                <input type="password" class="form-control" id="oldPasswordInput" name="old_password">
+            </div>
+            <!-- New password input on the right -->
+            <div class="col-md-6 mb-3">
+                <label for="newPasswordInput" class="form-label">New Password</label>
+                <input type="password" class="form-control" id="newPasswordInput" name="new_password">
             </div>
         </div>
         <!-- Save button -->

@@ -6,9 +6,12 @@ APP module
 from flask import Flask, session
 from auth import app_views_auth
 from wishlist import app_views_wishlist
+from home import app_views_home
 from wishlist import app_views_sell
 from wishlist import app_views_rent
 from auth import app_views_message
+from property import app_views_property
+from action import app_views_action
 from flask_cors import CORS
 from flask_login import LoginManager
 from models import storage
@@ -22,6 +25,8 @@ from datetime import datetime
 
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = 'static/uploads'
+
 CORS(app, resources={r'/*': {'origins': '0.0.0.0'}})
 app.secret_key = "a2cf8cf6ad37b0d8eb2b51846aee0e34"
 socketio = SocketIO(app)
@@ -31,6 +36,9 @@ app.register_blueprint(app_views_wishlist)
 app.register_blueprint(app_views_rent)
 app.register_blueprint(app_views_sell)
 app.register_blueprint(app_views_message)
+app.register_blueprint(app_views_home)
+app.register_blueprint(app_views_property)
+app.register_blueprint(app_views_action)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -100,7 +108,7 @@ def load_user(id):
 
 @app.teardown_appcontext
 def teardown_db(exception):
-    """Close everytime the opened session"""
+    #Close everytime the opened session
     try:
         storage.close()
     except Exception as e:

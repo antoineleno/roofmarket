@@ -24,7 +24,7 @@ from email.mime.text import MIMEText
 import datetime
 import os
 from operator import attrgetter
-from datetime import datetime
+
 
 auth = Blueprint('auth', __name__)
 
@@ -45,14 +45,14 @@ def login_view():
                 message = "Successfully Logged In"
                 login_user(user)
                 flash(message, 'success')
-                return redirect(url_for('app_views_auth.base'))
+                return redirect(url_for('app_view_home.home'))
             message = "Authentification failed : Password or email incorrect"
             flash(message, "error")
-            return redirect(url_for('app_views_auth.base'))
+            return redirect(url_for('app_view_home.home'))
         else:
             message = "Account doesn't exist"
             flash(message, "error")
-            return redirect(url_for('app_views_auth.base'))
+            return redirect(url_for('app_view_home.home'))
 
 
 @login_required
@@ -60,7 +60,7 @@ def login_view():
 def log_out():
     """User logout Function"""
     logout_user()
-    return redirect(url_for('app_views_auth.base'))
+    return redirect(url_for('app_view_home.home'))
 
 
 @app_views_auth.route('/sign_up', methods=['GET', 'POST'])
@@ -89,17 +89,17 @@ def sign_up():
             new_instance.save()
             message = """Account successfully created"""
             flash(message, 'success')
-            return redirect(url_for('app_views_auth.base'))
+            return redirect(url_for('app_view_home.home'))
 
         except IntegrityError as e:
             storage.close()
             message = """Account not created, Email already exist"""
             flash(message, 'error')
-            return redirect(url_for('app_views_auth.base'))
+            return redirect(url_for('app_view_home.home'))
     else:
         message = """An error occur while creating your accound!"""
         flash(message, 'error')
-        return redirect(url_for('app_views_auth.base'))
+        return redirect(url_for('app_view_home.home'))
 
 
 @app_views_auth.route('/forgot_password', methods=['GET', 'POST'])
@@ -118,11 +118,11 @@ def forget_password():
             sent to your email address.
             """
             flash(message, "success")
-            return redirect(url_for('app_views_auth.base'))
+            return redirect(url_for('app_view_home.home'))
         else:
             message = "There is no account associated with this email."
             flash(message, "error")
-            return redirect(url_for('app_views_auth.base'))
+            return redirect(url_for('app_view_home.home'))
 
 
 @app_views_auth.route('/base', methods=['GET', 'POST'])
@@ -201,6 +201,7 @@ def new_conversation():
     """Create a new room for a user"""
     if request.method == "POST":
         show_modal = "yes"
+        
         current_user_id = request.form.get('current_user_id')
         receiver_id = request.form.get('receiver_id')
         property_id = request.form.get('property_id')
@@ -210,13 +211,14 @@ def new_conversation():
         room_checking_2 = storage.get_object(RoomParticipants,
                                              user_id=receiver_id,
                                              property_id=property_id)
-        s = room_checking_1.room_id == room_checking_2.room_id
-        if room_checking_1 and room_checking_2 and s:
-            room_checking_1.updated_at = datetime.utcnow()
-            room_checking_2.updated_at = datetime.utcnow()
-            room_checking_1.save()
-            room_checking_2.save()
-            return render_template("base.html", show_modal=show_modal)
+        if room_checking_1 is not None and room_checking_2 is not None:
+            s = room_checking_1.room_id == room_checking_2.room_id
+            if room_checking_1 and room_checking_2 and s:
+                room_checking_1.updated_at = datetime.datetime.utcnow()
+                room_checking_2.updated_at = datetime.datetime.utcnow()
+                room_checking_1.save()
+                room_checking_2.save()
+                return redirect(url_for('app_view_property.property_onclick', property_id=property_id, show_modal=show_modal))
         else:
             new_room = Room()
             first_room_participant = RoomParticipants(user_id=current_user_id,
@@ -233,8 +235,8 @@ def new_conversation():
                               message="New conversation opened!")
             message.save()
             update_online_status(False)
-            return render_template("base.html", show_modal=show_modal)
-    return render_template('room_creation.html')
+            return redirect(url_for('app_view_property.property_onclick', property_id=property_id))
+ 
 
 
 @app_views_auth.route('/messages/<room_id>', methods=['GET'])
@@ -263,7 +265,7 @@ def get_conversation(room_id):
         property_id = room_participant.property_id
         room_property = storage.get_object(Property, id=property_id)
         property_name = room_property.title
-        property_url = "http://127.0.0.1:5000/auth/base"
+        property_url = "http://127.0.0.1:5000/"+ url_for('app_view_property.property_onclick', property_id=property_id)
 
         my_conversation = {
             "property_name": property_name,
@@ -340,12 +342,30 @@ def profile():
             email = request.form.get('email')
             user.email = email
             file = request.files.get('profile_pic')
-            _, file_extension = os.path.splitext(file.filename)
-
-            filename = secure_filename(f"{current_user.id}{file_extension}")
-            file.save(os.path.join('auth', 'static', 'img',
-                                           filename))
-            user.profile_image = filename
+            if file:
+                _, file_extension = os.path.splitext(file.filename)
+                user_id = current_user.id
+                filename = secure_filename(f"{user_id}{file_extension}")
+                file.save(os.path.join('auth', 'static', 'img',
+                                       filename))
+                user.profile_image = filename
+            old_password = request.form.get('old_password')
+            new_password = request.form.get('new_password')
+            if old_password or new_password:
+                if old_password and new_password:
+                    if user.verify_password(password=old_password):
+                        user.password = new_password
+                        message = """Password successfully updated"""
+                        e_type = "success"
+                    else:
+                        message = """Password not updated, old password
+                        incorrect."""
+                        e_type = "error"
+                    flash(message, e_type)
+                else:
+                    message = """Password not updated, you should
+                    provide both fields."""
+                    flash(message, "error")
             storage.save()
             return redirect(url_for('app_views_auth.profile'))
         else:
@@ -478,8 +498,7 @@ def property_subcription():
                 'area': property.area,
                 'bedrooms': property.bedrooms,
                 'bathrooms': property.bathrooms,
-                'picture_link': "eb9a260b-2a73-4747-a0cb-7a1a8d2ac44e_p.jpg"
-                # find_image_path(property.id)
+                'picture_link': storage.get_image(property.id, "Main_image").image_url
             }
             property_attributes.append(values)
 
@@ -601,8 +620,9 @@ def manage_advertisement():
                     agent_image_extension = os.path.splitext(
                         agent_image.filename)[1]
                     agent_image_filename = os.path.join(
-                        "auth/static/img", f"agent_{i}{
-                            agent_image_extension}")
+                "auth/static/img", f"agent_{i}{agent_image_extension}"
+                )
+
                     agent_image.save(agent_image_filename)
                     new_agent = Agent()
                     print(agent_name)

@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', () => {
     const minPriceInput = document.getElementById('minPrice');
     const maxPriceInput = document.getElementById('maxPrice');
@@ -30,6 +31,61 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+function addNewImageField(input) {
+    // Check if the file input has a value (an image was selected)
+    if (input.files.length > 0) {
+        // Create a new div for the additional image input
+        const newDiv = document.createElement('div'); // No class assignment
+        newDiv.className = 'col-md-6 mb-3';
+
+        // Create new file input
+        const newFileInput = document.createElement('input');
+        newFileInput.type = 'file';
+        newFileInput.className = 'form-control';
+        newFileInput.accept = 'image/*';
+        newFileInput.name = 'additionalImages';
+        newFileInput.required = false;
+        newFileInput.onchange = function() { addNewImageField(this); };
+
+        // Create label for image description
+        const label = document.createElement('label');
+        label.className = 'form-label'; // Ensure it has form-label class for styling
+        label.innerText = 'Image Description';
+
+        // Create new select input for description
+        const newSelect = document.createElement('select');
+        newSelect.className = 'form-select'; // Ensure it has form-select class for styling
+        newSelect.name = 'additionalDescriptions'; // Name for the form
+        newSelect.required = false; // Make it required
+
+        // Add options to the select input
+        const options = [
+            { value: "", text: "Select an image description" },
+            { value: "main_entrance", text: "Main Entrance" },
+            { value: "kitchen", text: "Kitchen" },
+            { value: "living_room", text: "Living Room" },
+            { value: "bedroom", text: "Bedroom" },
+            { value: "bathroom", text: "Bathroom" },
+            { value: "balcony", text: "Balcony" }
+        ];
+
+        // Create and append options to the select element
+        options.forEach(optionData => {
+            const option = document.createElement('option');
+            option.value = optionData.value;
+            option.text = optionData.text;
+            newSelect.appendChild(option);
+        });
+
+        // Append new elements to the new div
+        newDiv.appendChild(newFileInput);
+        newDiv.appendChild(label); // Append label before the select
+        newDiv.appendChild(newSelect); // Append the select element after the label
+
+        // Append the new div to the container
+        document.getElementById('imageContainer').appendChild(newDiv);
+    }
+}
 
 // Property description text
 function readMore() {
@@ -252,20 +308,6 @@ async function loadMessages() {
         messageList.innerHTML = '<p>Error loading messages. Please try again later.</p>';
     }
 }
-
-
-    // Refesh the page when the message is closed
-    document.addEventListener('DOMContentLoaded', function () {
-        // Select the close button element by its class (using the class 'btn-close')
-        var closeButton = document.querySelector('.btn-close');
-
-        // Add an event listener for the click event on the close button
-        closeButton.addEventListener('click', function () {
-            // Reload the page when the close button is pressed
-            location.reload();
-        });
-    });
-
 
 
   // Function to collapse the navbar if it's open
