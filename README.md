@@ -12,7 +12,7 @@
 
 
 <h3 align="center">A passionate Data Scientist and Web Developer.</h3>
-<img alt="Data science" width="1200" src="7571899.jpg">
+<img alt="Data science" width="1200" src="7576965.jpg">
 <h3 align="center">I warmly welcome you to explore my GitHub repository.</h3>
 <p align="left"> <img src="https://komarev.com/ghpvc/?username=antoineleno&label=Profile%20views&color=0e75b6&style=flat" alt="antoineleno" /> </p>
 
