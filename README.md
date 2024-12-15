@@ -70,7 +70,11 @@ python3 app.py
   <img src="https://contrib.rocks/image?repo=othneildrew/Best-README-Template" alt="contrib.rocks image" />
 </a>
 
+<a href="https://github.com/antoineleno/bah/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=antoineleno/bah" />
+</a>
 
+Made with [contrib.rocks](https://contrib.rocks).
 
 <h3 align="center">A passionate Data Scientist and Web Developer.</h3>
 <img alt="Data science" width="1200" src="7571899.jpg">
