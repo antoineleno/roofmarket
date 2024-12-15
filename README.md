@@ -31,18 +31,30 @@ git clone https://github.com/antoineleno/roofmarket.git
 
 ```bash
 cd roofmarket
+``` 
+
+3. Create virtual environment
+
+```bash
+python3 -m venv myenv
 ```
 
-3. Install dependencies
+4. Install dependencies
 
 ```bash
 npm install
 ```
 
+. Change the working directory
+
+```bash
+cd web_flask
+```
+
 4. Run the app
 
 ```bash
-npm start
+python3 app.py
 ```
 
 🌟 You are all set!
