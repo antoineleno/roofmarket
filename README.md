@@ -1,6 +1,18 @@
-<h1 align="center">Hi 👋, I'm Antoine LENO</h1>
+<h1 align="center" style="background-color: white; color: green; padding: 10px; border-radius: 5px; font-weight: bold; font-family: 'Arial', sans-serif;">
+  <img src="web_flask/auth/static/img/icon-deal.png" 
+       alt="icon" 
+       style="width: 40px; height: 40px; border-radius: 50%; background-color: white; border: 2px dashed green; padding: 5px; vertical-align: middle;"> 
+  <span style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+">RoofMarket</span> 
+</h1>
+<h1 align="left">Project Description</h1>
+
+
+
+
+
 <h3 align="center">A passionate Data Scientist and Web Developer.</h3>
-<img alt="Data science" width="1200" src="https://img.freepik.com/premium-photo/digital-dashboard-showcasing-stakeholder-metrics-datadriven-insights-informed-decisionmaking_38013-8895.jpg?w=826">
+<img alt="Data science" width="1200" src="7571899.jpg">
 <h3 align="center">I warmly welcome you to explore my GitHub repository.</h3>
 <p align="left"> <img src="https://komarev.com/ghpvc/?username=antoineleno&label=Profile%20views&color=0e75b6&style=flat" alt="antoineleno" /> </p>
 
